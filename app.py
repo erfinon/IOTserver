@@ -62,4 +62,4 @@ def test():
 
 @app.get("/lala")
 def lala():
-    return "done."
+    return "clear."
