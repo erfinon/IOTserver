@@ -1,7 +1,19 @@
+import os
 from flask import Flask
 from flask import request
+
 import json
 app = Flask(__name__)
+
+
+
+@app.get("/webhook")
+def webhook():
+    os.system("git pull")
+    return "clear."
+
+
+
 @app.post("/std")
 def hello():
     #args = request.args
