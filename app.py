@@ -60,3 +60,6 @@ def test():
     else:
         return request.json
 
+@app.get("/lala")
+def lala():
+    return "done."
