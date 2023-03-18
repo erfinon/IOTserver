@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.get("/webhook")
 def webhook():
-    os.system("git pull")
+    #os.system("git pull")
     return "clear."
 
 
