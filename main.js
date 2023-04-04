@@ -20,10 +20,24 @@ var app = module.exports = express();
 
 
 
+
 // example: http://localhost:3000/api/users/?api-key=foo
 app.get('/', function (req, res) {
     res.send("AAAA");
   });
+
+
+
+
+  
+app.get('/webhook', function (req, res) {
+    let sig = "sha1=" + crypto.createHmac('sha1', secret).update(chunk.toString()).digest('hex');
+
+        if (req.headers['x-hub-signature'] == sig) {
+            exec('cd ' + repo + ' && git pull');
+        }
+  });
+
 
 // middleware with an arity of 4 are considered
 // error handling middleware. When you next(err)
