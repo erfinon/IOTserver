@@ -17,42 +17,11 @@ const exec = require('child_process').exec;
 
 var app = module.exports = express();
 
-// create an error with .status. we
-// can then use the property in our
-// custom error handler (Connect respects this prop as well)
 
-function error(status, msg) {
-  var err = new Error(msg);
-  err.status = status;
-  return err;
-}
-
-// if we wanted to supply more than JSON, we could
-// use something similar to the content-negotiation
-// example.
-
-// here we validate the API key,
-// by mounting this middleware to /api
-// meaning only paths prefixed with "/api"
-// will cause this middleware to be invoked
-
-app.use('/api', function(req, res, next){
-  var key = req.query['api-key'];
-
-  // key isn't present
-  if (!key) return next(error(400, 'api key required'));
-
-  // key is invalid
-  if (apiKeys.indexOf(key) === -1) return next(error(401, 'invalid api key'))
-
-  // all good, store req.key for route access
-  req.key = key;
-  next();
-});
 
 
 // example: http://localhost:3000/api/users/?api-key=foo
-app.get('/api/users', function (req, res) {
+app.get('/', function (req, res) {
     res.send("AAAA");
   });
 
