@@ -7,7 +7,7 @@
 var express = require('express');
 
 const secret = "erfi";
-const repo = "~/home/www/IOTserver";
+const repo = "/home/www/IOTserver";
 
 const http = require('http');
 const crypto = require('crypto');
