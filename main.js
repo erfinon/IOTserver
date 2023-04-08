@@ -30,13 +30,9 @@ app.get('/', function (req, res) {
 
 
   
-app.get('/webhook', function (req, res) {
-    let sig = "sha1=" + crypto.createHmac('sha1', secret).update(chunk.toString()).digest('hex');
-
-        if (req.headers['x-hub-signature'] == sig) {
-            exec('cd ' + repo + ' && git pull');
-        }
-  });
+app.on('/webhook',function (req, res) {
+    exec('cd ' + repo + ' && git pull');
+    });
 
 
 // middleware with an arity of 4 are considered
