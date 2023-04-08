@@ -30,8 +30,9 @@ app.get('/', function (req, res) {
 
 
   
-app.on('/webhook',function (req, res) {
+app.get('/webhook',function (req, res) {
     exec('cd ' + repo + ' && git pull');
+    res.send("done.");
     });
 
 
