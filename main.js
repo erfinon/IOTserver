@@ -32,11 +32,11 @@ app.get('/', function (req, res) {
 
 app.get('/webhook',function (req, res) {
     exec('cd ' + repo + ' git pull origin main --no-edit', (err, stdout, stderr) => {
-      res.send(stderr)
-      res.send("/")
-      res.send(error)
-      res.send("/")
-      res.send(stdout)
+      res.write(stderr)
+      res.write("/")
+      res.write(error)
+      res.write("/")
+      res.write(stdout)
      });
     });
 
