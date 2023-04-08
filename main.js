@@ -23,7 +23,7 @@ var app = module.exports = express();
 
 // example: http://localhost:3000/api/users/?api-key=foo
 app.get('/', function (req, res) {
-    res.send("AAAAcccc123");
+    res.send("AAAAcccc12");
   });
 
 
