@@ -31,7 +31,7 @@ app.get('/', function (req, res) {
 
 
 app.get('/webhook',function (req, res) {
-    exec('cd ' + repo + ' && git pull');
+    exec('cd ' + repo + ' git pull origin main --no-log');
     res.send("done.");
     });
 
