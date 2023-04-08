@@ -34,7 +34,7 @@ app.get('/webhook',function (req, res) {
     exec('cd ' + repo + ' git pull origin main --no-edit', (err, stdout, stderr) => {
       res.write(stderr)
       res.write("/")
-      res.write(error)
+      res.write(err)
       res.write("/")
       res.write(stdout)
      });
