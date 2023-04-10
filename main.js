@@ -35,8 +35,6 @@ app.get('/webhook',function (req, res) {
     exec('cd ' + repo + ' mkdir erfan', (err, stdout, stderr) => {
       res.write(stderr)
       res.write("/")
-      res.write((str)err)
-      res.write("/")
       res.write(stdout)
      });
     });
