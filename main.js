@@ -37,6 +37,7 @@ app.get('/webhook',function (req, res) {
       console.log(stdout);
       console.log(stderr);
      });
+     res.end()
     });
 
 
