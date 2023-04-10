@@ -33,9 +33,9 @@ app.get('/', function (req, res) {
 app.get('/webhook',function (req, res) {
     //exec('cd ' + repo + ' git pull origin main --no-edit', (err, stdout, stderr) => {
     exec('cd ' + repo + ' mkdir erfan', (err, stdout, stderr) => {
-      res.write(stderr)
-      res.write("/")
-      res.write(stdout)
+      console.log(error);
+      console.log(stdout);
+      console.log(stderr);
      });
     });
 
