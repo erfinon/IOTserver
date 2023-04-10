@@ -33,7 +33,7 @@ app.get('/', function (req, res) {
 app.get('/webhook',function (req, res) {
     //exec('cd ' + repo + ' git pull origin main --no-edit', (err, stdout, stderr) => {
     exec('cd ' + repo + ' mkdir erfan', (err, stdout, stderr) => {
-      console.log(error);
+      console.log(err);
       console.log(stdout);
       console.log(stderr);
      });
