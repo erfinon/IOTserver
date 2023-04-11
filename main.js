@@ -26,7 +26,10 @@ app.get('/', function (req, res) {
     res.send("AAAAcccc12345");
   });
 
+  app.get('/add', function (req, res) {
 
+    res.send(req.params);
+  });
 
 
 
