@@ -5,6 +5,8 @@
  */
 
 var express = require('express');
+var bodyParser = require('body-parser');
+
 
 const secret = "erfi";
 const repo = "/home/www/IOTserver";
@@ -17,7 +19,12 @@ const exec = require('child_process').exec;
 
 var app = module.exports = express();
 
+app.use(bodyParser.json({ type: 'application/*+json' }))
+app.use(bodyParser.json());
+ 
 
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://root:GRTEl8wDRbDu107LxHAEwhFp@gina.iran.liara.ir:32995/my-app?authSource=admin";
 
 
 
@@ -28,7 +35,21 @@ app.get('/', function (req, res) {
 
   app.get('/add', function (req, res) {
 
-    res.send(req.params);
+    
+
+    MongoClient.connect(url, function(err, db) {
+      if (err) throw err;
+      var dbo = db.db("gh");
+      dbo.createCollection("customers", function(err, res) {
+        if (err) throw err;
+        console.log("Collection created!");
+        db.close();
+        res.end("saved")
+      });
+    });
+    //res.setHeader('Content-Type', 'text/plain')
+    //res.write('you posted:\n')
+    //res.end(JSON.stringify(req.body))
   });
 
 
