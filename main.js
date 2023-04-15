@@ -33,7 +33,7 @@ app.get('/', function (req, res) {
   });
 
   app.get('/anomalyboard', function (req, res) {
-    res.sendFile("/anomalyboard.htm");
+    res.sendFile("anomalyboard.htm");
   });
 
   app.get('/add', async function (req, res) {
