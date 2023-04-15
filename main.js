@@ -44,7 +44,7 @@ app.get('/', function (req, res) {
         if (err) throw err;
         console.log("Collection created!");
         db.close();
-        res.end("saved")
+        res.end("savedc")
       });
     });
     //res.setHeader('Content-Type', 'text/plain')
