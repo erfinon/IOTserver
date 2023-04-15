@@ -103,46 +103,6 @@ app.get('/webhook',function (req, res) {
       });
 
 
-    app.get('/setAnomaly',async function (req, res) {
-      try {
-        const database = client.db("gh");
-        const haiku = database.collection("anomaly_board");
-        /*
-          anomaly format in json to store :
-          {
-            "_id":"",
-            "title":"",
-            "level":0,
-            "desc":"",
-            "detectorID":"",
-            "forwardedHead":"" --> refers to detector device's incoming head
-            "spotTime":"",
-            "retrieveTime":""
-            "metadata":""
-          }
-        */
-        var _doc = req.body;
-        _doc["retrieveTime"] = new Date();
-        _doc["incomingHead"] = "ANOMALY ALERT";
-        const doc = _doc;
-        const result = await haiku.insertOne(doc);
-        const log_result = doc;
-        log_result["pre_id"] = result.insertedId;
-        delete log_result["_id"];
-        log_result["logStatus"] = "status";
-        log_result["logDesc"] = ".......";
-        log_result["incomingHead"] = "ANOMALY LOG";
-
-        await database.collection("anomaly_logs").insertOne(log_result)
-        console.log(`A document (anomaly set_log) was inserted with the _id: ${result.insertedId}`);
-      } finally {
-        //await client.close();
-      }
-    res.end("pass.")
-      });
-
-
-
       app.get('/delAnomaly',async function (req, res) {
         try {
           const database = client.db("gh");
@@ -173,6 +133,49 @@ app.get('/webhook',function (req, res) {
         }
       res.end("pass.")
         });
+
+
+
+
+
+        app.get('/getAnomalyBoard',async function (req, res) {
+          try {
+            const database = client.db("gh");
+            const haiku = database.collection("anomaly_board");
+            /*
+              anomaly format in json to store logs :
+              {
+                "_id":"",
+                "title":"",
+                "level":0,
+                "desc":"",
+                "detectorID":"", --> refers to the detector's deviceID
+                "forwardedHead":"" --> refers to detector device's incoming head
+                "spotTime":"",
+                "retrieveTime":""
+                "metadata":"",
+                "logStatus":"" --> ADD,DEL
+                "logDesc":""
+              }
+            */
+            
+          //const cursor = await haiku.find({"title":"title"});
+          const cursor = haiku.find({});
+          console.log("async");
+          for await (const doc of cursor) {
+            res.write(JSON.stringify(doc));
+            res.write("\n\n\n\n")
+          }
+
+          } finally {
+            //await client.close();
+          }
+          res.end();
+          });
+    
+    
+       
+
 
 
 
