@@ -32,13 +32,14 @@ app.get('/', function (req, res) {
     res.send("AAAAcccc12345");
   });
 
-  app.get('/add', async function (req, res) {
+  app.get('/addTemp', async function (req, res) {
       try {
         const database = client.db("gh");
         const haiku = database.collection("weather");
         // create a document to insert
         var _doc = req.body;
         _doc["timestamp"] = new Date();
+        _doc["incomingHead"] = "temperature sensor";
         const doc = _doc;
         
         const result = await haiku.insertOne(doc);
