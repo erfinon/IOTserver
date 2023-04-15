@@ -32,14 +32,13 @@ app.get('/', function (req, res) {
     res.send("AAAAcccc12345");
   });
 
-  app.get('/addTemp', async function (req, res) {
+  app.get('/add', async function (req, res) {
       try {
         const database = client.db("gh");
         const haiku = database.collection("weather");
         // create a document to insert
         var _doc = req.body;
         _doc["timestamp"] = new Date();
-        _doc["incomingHead"] = "temperature sensor";
         const doc = _doc;
         
         const result = await haiku.insertOne(doc);
@@ -50,7 +49,7 @@ app.get('/', function (req, res) {
       }
     //res.setHeader('Content-Type', 'text/plain')
     //res.write('you posted:\n')
-    res.end(JSON.stringify(req.body));
+    res.end("pass.");
   });
 
 
@@ -64,6 +63,115 @@ app.get('/webhook',function (req, res) {
      });
      res.end()
     });
+
+
+
+
+    app.get('/logAnomaly',async function (req, res) {
+      try {
+        const database = client.db("gh");
+        const haiku = database.collection("anomaly_logs");
+        /*
+          anomaly format in json to store logs :
+          {
+            "_id":"",
+            "title":"",
+            "level":0,
+            "desc":"",
+            "detectorID":"", --> refers to the detector's deviceID
+            "forwardedHead":"" --> refers to detector device's incoming head
+            "spotTime":"",
+            "retrieveTime":""
+            "metadata":"",
+            "logStatus":"" --> ADD,DEL
+            "logDesc":""
+          }
+        */
+        var _doc = req.body;
+        _doc["retrieveTime"] = new Date();
+        const doc = _doc;
+        const result = await haiku.insertOne(doc);
+    
+        console.log(`A document (anomaly log) was inserted with the _id: ${result.insertedId}`);
+      } finally {
+        //await client.close();
+      }
+    res.end("pass.")
+      });
+
+
+    app.get('/setAnomaly',async function (req, res) {
+      try {
+        const database = client.db("gh");
+        const haiku = database.collection("anomaly_board");
+        /*
+          anomaly format in json to store :
+          {
+            "_id":"",
+            "title":"",
+            "level":0,
+            "desc":"",
+            "detectorID":"",
+            "forwardedHead":"" --> refers to detector device's incoming head
+            "spotTime":"",
+            "retrieveTime":""
+            "metadata":""
+          }
+        */
+        var _doc = req.body;
+        _doc["retrieveTime"] = new Date();
+        _doc["incomingHead"] = "ANOMALY ALERT";
+        const doc = _doc;
+        const result = await haiku.insertOne(doc);
+        const log_result = doc;
+        log_result["pre_id"] = result.insertedId;
+        delete log_result["_id"];
+        log_result["logStatus"] = "status";
+        log_result["logDesc"] = ".......";
+        log_result["incomingHead"] = "ANOMALY LOG";
+
+        await database.collection("anomaly_logs").insertOne(log_result)
+        console.log(`A document (anomaly set_log) was inserted with the _id: ${result.insertedId}`);
+      } finally {
+        //await client.close();
+      }
+    res.end("pass.")
+      });
+
+
+
+      app.get('/delAnomaly',async function (req, res) {
+        try {
+          const database = client.db("gh");
+          const haiku = database.collection("anomaly_board");
+          /*
+            anomaly format in json to delete :
+            {
+              "_id":"",
+              "title":"",
+              "level":0,
+              "desc":"",
+              "detectorID":"",
+              "forwardedHead":"" --> refers to detector device's incoming head
+              "spotTime":"",
+              "retrieveTime":""
+              "metadata":""
+            }
+          */
+          var _doc = req.body;
+          _doc["retrieveTime"] = new Date();
+          _doc["incomingHead"] = "ANOMALY ALERT";
+          const doc = _doc;
+          const result = await haiku.insertOne(doc);
+          
+          console.log(`A document (anomaly set_log) was inserted with the _id: ${result.insertedId}`);
+        } finally {
+          //await client.close();
+        }
+      res.end("pass.")
+        });
+
+
 
 
 // middleware with an arity of 4 are considered
