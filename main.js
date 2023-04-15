@@ -22,10 +22,9 @@ var app = module.exports = express();
 app.use(bodyParser.json({ type: 'application/*+json' }))
 app.use(bodyParser.json());
  
-
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://root:GRTEl8wDRbDu107LxHAEwhFp@gina.iran.liara.ir:32995/my-app?authSource=admin";
-
+const uri = "mongodb://root:GRTEl8wDRbDu107LxHAEwhFp@gina.iran.liara.ir:32995/my-app?authSource=admin";
+const client = new MongoClient(uri);
 
 
 // example: http://localhost:3000/api/users/?api-key=foo
@@ -33,24 +32,24 @@ app.get('/', function (req, res) {
     res.send("AAAAcccc12345");
   });
 
-  app.post('/add', function (req, res) {
-
+  app.get('/add', async function (req, res) {
+      try {
+        const database = client.db("gh");
+        const haiku = database.collection("weather");
+        // create a document to insert
+        var _doc = req.body;
+        _doc["timestamp"] = new Date();
+        const doc = _doc;
+        
+        const result = await haiku.insertOne(doc);
     
-
-    MongoClient.connect(url, function(err, db) {
-      if (err) throw err;
-      var dbo = db.db("gh");
-      dbo.createCollection("customers", function(err, res) {
-        if (err) throw err;
-        console.log("Collection created!");
-        db.close();
-        res.end("savedc")
-      });
-    });
+        console.log(`A document was inserted with the _id: ${result.insertedId}`);
+      } finally {
+        //await client.close();
+      }
     //res.setHeader('Content-Type', 'text/plain')
     //res.write('you posted:\n')
-    //res.end(JSON.stringify(req.body))
-    res.end("biaw")
+    res.end(JSON.stringify(req.body));
   });
 
 
