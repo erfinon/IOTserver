@@ -16,7 +16,6 @@ const crypto = require('crypto');
 const exec = require('child_process').exec;
 
 
-
 var app = module.exports = express();
 
 app.use(bodyParser.json({ type: 'application/*+json' }))
@@ -33,7 +32,7 @@ app.get('/', function (req, res) {
   });
 
   app.get('/anomalyboard', function (req, res) {
-    res.sendFile("anomalyboard.htm");
+    res.sendFile(__dirname+"/anomalyboard.htm");
   });
 
   app.get('/add', async function (req, res) {
