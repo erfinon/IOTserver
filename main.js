@@ -32,6 +32,10 @@ app.get('/', function (req, res) {
     res.send("AAAAcccc12345");
   });
 
+  app.get('/anomalyboard', function (req, res) {
+    res.sendFile("/anomalyboard.htm");
+  });
+
   app.get('/add', async function (req, res) {
       try {
         const database = client.db("gh");
