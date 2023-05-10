@@ -14,7 +14,7 @@
   xhttp.onload = function() {
     document.getElementById("out").innerHTML = this.responseText;
     }
-  xhttp.open("GET", "http://185.8.173.245/getAnomalyBoard", true);
+  xhttp.open("GET", "http://103.75.198.176:3000/anomalyboard", true);
   xhttp.send();
 }
 setInterval(loadDoc,100);
