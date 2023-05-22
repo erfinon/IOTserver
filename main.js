@@ -35,6 +35,10 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname+"/anomalyboard.htm");
   });
 
+  app.get('/currentstate', function (req, res) {
+    res.sendFile(__dirname+"/currentstate.htm");
+  });
+
   app.post('/add', async function (req, res) {
       try {
         const database = client.db("gh");
@@ -47,6 +51,13 @@ app.get('/', function (req, res) {
         const result = await haiku.insertOne(doc);
     
         console.log(`A document was inserted with the _id: ${result.insertedId}`);
+        console.log("weather added.");
+
+
+        const haiku1 = database.collection("LASTweather");
+        const temp = _doc["metaData"];;//_doc["metaData"];
+        const result1 = await haiku1.updateOne({"_id":"1"},{$set: {"temperatures":temp}})
+        console.log(`A LASTweather document was inserted with the _id: ${result1.insertedId}`);
       } finally {
         //await client.close();
       }
@@ -55,7 +66,22 @@ app.get('/', function (req, res) {
     res.end("pass.");
   });
 
-
+  app.get('/getLASTweather',async function (req, res) {
+    try {
+      const database = client.db("gh");
+      const haiku = database.collection("LASTweather");
+      
+    //const cursor = await haiku.find({"title":"title"});
+    const cursor = haiku.find({"_id":"1"});
+    for await (const doc of cursor) {
+      res.write(JSON.stringify(doc));
+      res.write("\n\n\n\n")
+    }
+  }finally {
+    //await client.close();
+    }
+  res.end();
+  });
 
 app.get('/webhook',function (req, res) {
     //exec('cd ' + repo + ' git pull origin main --no-edit', (err, stdout, stderr) => {
@@ -185,7 +211,7 @@ app.get('/webhook',function (req, res) {
               
             //const cursor = await haiku.find({"title":"title"});
             const cursor = haiku.find({"_id":"1"});
-            console.log("async");
+            console.log("Status added.");
             for await (const doc of cursor) {
               res.write(JSON.stringify(doc));
               res.write("\n\n\n\n")

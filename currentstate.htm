@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+<div>
+  <h2 id="out">Let AJAX change this text</h2>
+  <h2 id="out1">Let AJAX change this text</h2>
+  <!--<button type="button" onclick="loadDoc()">Change Content</button> -->
+</div>
+
+<script>
+    function loadDoc() {
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function() {
+    document.getElementById("out").innerHTML = this.responseText;
+    }
+  xhttp.open("GET", "/getLASTweather", true);
+  xhttp.send();
+    }
+
+
+    function loadDoc1() {
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function() {
+    document.getElementById("out1").innerHTML = this.responseText;
+    }
+  xhttp.open("GET", "/Status", true);
+  xhttp.send();
+    }
+
+
+
+setInterval(loadDoc,100);
+setInterval(loadDoc1,100);
+</script>
+</body>
+</html>
