@@ -35,7 +35,7 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname+"/anomalyboard.htm");
   });
 
-  app.get('/add', async function (req, res) {
+  app.post('/add', async function (req, res) {
       try {
         const database = client.db("gh");
         const haiku = database.collection("weather");
@@ -174,6 +174,54 @@ app.get('/webhook',function (req, res) {
           });
     
     
+
+
+
+
+          app.get('/Status',async function (req, res) {
+            try {
+              const database = client.db("gh");
+              const haiku = database.collection("STATUS");
+              
+            //const cursor = await haiku.find({"title":"title"});
+            const cursor = haiku.find({"_id":"1"});
+            console.log("async");
+            for await (const doc of cursor) {
+              res.write(JSON.stringify(doc));
+              res.write("\n\n\n\n")
+            }
+          }finally {
+            //await client.close();
+            }
+          res.end();
+          });
+          
+        
+          app.get('/changeStatus',async function (req, res) {
+            // sending STATUS in json, Upper-case
+              try {
+                const database = client.db("gh");
+                const haiku = database.collection("HISTORY");
+                
+                var _doc = req.body;
+                _doc["retrieveTime"] = new Date();
+                _doc["incomingHead"] = "STATUSCHANGE";
+                const doc = _doc;
+                const result = await haiku.insertOne(doc);
+
+                const haiku1 = database.collection("STATUS");
+                const temp = _doc["status"];
+                const result1 = await haiku1.updateOne({"_id":"1"},{$set: {"status":temp}})
+
+                
+              }
+              finally {
+            //await client.close();
+            }
+          res.end();
+          });
+          
+      
        
 
 
@@ -205,3 +253,5 @@ if (!module.parent) {
   app.listen(3000);
   console.log('Express started on port 3000');
 }
+
+        
