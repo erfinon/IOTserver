@@ -223,18 +223,19 @@ app.get('/webhook',function (req, res) {
           });
           
         
-          app.get('/changeStatus',async function (req, res) {
+          app.post('/changeStatus',async function (req, res) {
             // sending STATUS in json, Upper-case
               try {
                 const database = client.db("gh");
                 const haiku = database.collection("HISTORY");
                 
                 var _doc = req.body;
+                delete _doc["_id"];
                 _doc["retrieveTime"] = new Date();
                 _doc["incomingHead"] = "STATUSCHANGE";
                 const doc = _doc;
                 const result = await haiku.insertOne(doc);
-
+                
                 const haiku1 = database.collection("STATUS");
                 const temp = _doc["status"];
                 const result1 = await haiku1.updateOne({"_id":"1"},{$set: {"status":temp}})
@@ -244,7 +245,7 @@ app.get('/webhook',function (req, res) {
               finally {
             //await client.close();
             }
-          res.end();
+            res.end("pass.");
           });
           
       
