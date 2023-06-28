@@ -96,7 +96,7 @@ app.get('/webhook',function (req, res) {
 
 
 
-    app.get('/logAnomaly',async function (req, res) {
+    app.post('/logAnomaly',async function (req, res) {
       try {
         const database = client.db("gh");
         const haiku = database.collection("anomaly_logs");
